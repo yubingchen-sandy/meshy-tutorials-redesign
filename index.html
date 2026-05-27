@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorials · Meshy (Redesign)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Meshy dark-theme tokens lifted from styles/theme.css (reference only).
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "bg-base": "#181818",
+              "bg-base-hover": "#262626",
+              "bg-modal-overlay": "#00000099",
+              "bg-translucent": "#ffffff0d",
+              "bg-translucent-strong": "#ffffff1a",
+              "label-title": "#ffffff",
+              "label-base": "#dedede",
+              "label-soft": "#9b9b9b",
+              "accent-base": "#c5f955",
+              "accent-base-hover": "#a8e328",
+            },
+            maxWidth: { "8xl": "88rem" },
+          },
+        },
+      };
+    </script>
+    <style>
+      html,
+      body {
+        background-color: #0f0f0f;
+        color: #dedede;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+      }
+      .card-img {
+        transition: transform 0.3s ease-out;
+      }
+      .group:hover .card-img {
+        transform: scale(1.02);
+      }
+      ::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2e2e2e;
+        border-radius: 9999px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="mx-auto flex w-full max-w-8xl flex-col items-center px-4 md:px-6 lg:px-8">
+      <!-- Page title -->
+      <div class="flex w-full items-center justify-between py-8">
+        <h1 class="text-left text-[32px] font-bold text-white">Tutorials</h1>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="flex w-full flex-col gap-8 pb-32">
+        <div
+          class="flex flex-col items-stretch justify-between gap-2 rounded-xl border border-bg-translucent bg-bg-base p-2 shadow-sm xl:flex-row xl:items-center"
+        >
+          <!-- Left: primary tabs -->
+          <div class="-mx-2 overflow-visible px-2 xl:mx-0 xl:px-0">
+            <div class="flex flex-row items-center gap-2 whitespace-nowrap">
+              <!-- Meshy Official YouTube Tutorials (with dropdown) -->
+              <div class="relative" id="ytWrap">
+                <button
+                  id="ytTab"
+                  data-tab="youtube"
+                  class="tab-btn group/yt flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-accent-base transition hover:bg-bg-base-hover"
+                >
+                  <!-- Meshy mono icon -->
+                  <svg viewBox="0 0 24 24" class="size-4" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3 6.5 3.6L12 11.5 5.5 7.9 12 4.3Zm-7 5.4 6 3.3v6.6l-6-3.3V9.7Zm14 0v6.6l-6 3.3v-6.6l6-3.3Z" />
+                  </svg>
+                  <span>Meshy Official YouTube Tutorials</span>
+                  <svg id="ytCaret" viewBox="0 0 24 24" class="size-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+                  </svg>
+                </button>
+
+                <!-- Dropdown: 4 playlists -->
+                <div
+                  id="ytMenu"
+                  class="absolute left-0 top-full z-30 mt-2 hidden w-64 overflow-hidden rounded-xl border border-bg-translucent bg-bg-base p-1.5 shadow-2xl"
+                >
+                  <button
+                    class="playlist-item flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-label-base transition hover:bg-bg-base-hover"
+                    data-playlist="all"
+                  >
+                    <span>All Official Videos</span>
+                  </button>
+                  <div class="my-1 h-px bg-bg-translucent"></div>
+                  <!-- playlist buttons injected here -->
+                  <div id="playlistList"></div>
+                </div>
+              </div>
+
+              <!-- Blog Guides tab -->
+              <button
+                data-tab="blog"
+                class="tab-btn flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-label-base transition hover:bg-bg-base-hover"
+              >
+                <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16M4 12h16M4 19h10" />
+                </svg>
+                <span>Blog Guides</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: sort -->
+          <div class="flex shrink-0 flex-row items-center justify-end gap-2 self-end xl:self-auto">
+            <button
+              data-sort="newest"
+              class="sort-btn flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-accent-base transition hover:bg-bg-base-hover"
+            >
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h13M3 12h9M3 17h5M17 17l3 3 3-3M20 6v14" />
+              </svg>
+              <span>Newest</span>
+            </button>
+            <button
+              data-sort="hottest"
+              class="sort-btn flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-label-base transition hover:bg-bg-base-hover"
+            >
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 18V9M10 18V5M16 18v-6M22 18H2" />
+              </svg>
+              <span>Hottest</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Active playlist pill (shown when a playlist filter is active) -->
+        <div id="activeFilter" class="hidden -mt-4">
+          <span class="inline-flex items-center gap-2 rounded-full border border-bg-translucent bg-bg-base px-3 py-1 text-sm text-label-soft">
+            <span id="activeFilterLabel"></span>
+            <button id="clearFilter" class="text-label-soft hover:text-label-title" aria-label="Clear filter">
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+          </span>
+        </div>
+
+        <!-- Card grid -->
+        <div id="grid" class="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-4"></div>
+
+        <div id="endDivider" class="flex items-center justify-center gap-3 pt-4 text-label-soft">
+          <span class="h-px w-12 bg-bg-translucent-strong"></span>
+          <span class="text-xs">You've reached the end</span>
+          <span class="h-px w-12 bg-bg-translucent-strong"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---- Playlists (ids match the real ones in TutorialsPage/index.tsx) ----
+      const PLAYLISTS = [
+        { id: "PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis", title: "Meshy Quick Guide" },
+        { id: "PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3", title: "Meshy + Blender" },
+        { id: "PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23", title: "Meshy + Game Dev" },
+        { id: "PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq", title: "Meshy + 3D Printing" },
+      ];
+
+      // ---- Sample YouTube videos (real titles/ids/thumbnails, demo metrics) ----
+      const VIDEOS = [
+        { id: "DRYu_M76qoM", title: "Easy 3D Animation with Meshy: Bring Characters to Life in Just a Few Clicks", views: 184000, date: "2024-07-31", duration: "6:12", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
+        { id: "xcJljUhgvS4", title: "Easy 3D Quadruped Animation with Meshy - It's time to walk the pet!", views: 96500, date: "2024-07-31", duration: "5:01", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
+        { id: "2faDCnIxfuw", title: "Fast & Easy Way to Create Animated Characters | Meshy + Blender + Mixamo", views: 241000, date: "2024-06-18", duration: "9:48", playlists: ["PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3"] },
+        { id: "cH6JN2OoISI", title: "How to Optimize Texture Quality with just a Few Clicks | Meshy Tutorial", views: 73200, date: "2024-05-23", duration: "4:36", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
+        { id: "PH9ULZUB3gM", title: "How to Easily Remove 3D flaws with Smart Healing | Meshy Tutorial", views: 58900, date: "2024-05-23", duration: "3:54", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
+        { id: "WvDCRRX65Rw", title: "From Text to 3D Sculpture: Master Advanced Modeling Techniques", views: 132000, date: "2024-05-20", duration: "11:20", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
+        { id: "AxYIn9jo4q4", title: "Mastering Lifelike CG Characters: Using Generative AI in Your 3D Workflow", views: 88400, date: "2024-05-10", duration: "8:05", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
+        { id: "2nfb0b-YPCI", title: "Meshy + Blender: Game-Ready Props in Minutes", views: 154000, date: "2024-04-28", duration: "7:33", playlists: ["PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3", "PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
+        { id: "1Qm0YpqQv0E", title: "From Meshy to 3D Print: Preparing a Watertight Model", views: 64700, date: "2024-04-15", duration: "10:12", playlists: ["PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq"] },
+        { id: "3kU8Yz9oQpE", title: "Slicing & Supports: 3D Printing a Meshy Figurine", views: 41200, date: "2024-04-02", duration: "12:40", playlists: ["PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq"] },
+        { id: "9aBcD3fGhIj", title: "Image to 3D in Under 60 Seconds — Meshy Quick Guide", views: 209000, date: "2024-03-20", duration: "1:58", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
+        { id: "kLmN0pQrStU", title: "Retopology & PBR Textures for Game Engines", views: 77800, date: "2024-03-05", duration: "9:21", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
+      ];
+
+      // ---- Blog Guides (first 8 from the requested slugs) ----
+      const BLOG_SLUGS = [
+        "image-to-3d-model-complete-guide",
+        "text-to-3d-model-tutorial",
+        "photo-to-3d-printable-model",
+        "3d-model-for-unity-workflow",
+        "character-auto-rigging-workflow",
+        "pbr-texturing-with-meshy",
+        "api-quickstart-image-to-3d",
+        "export-to-blender-workflow",
+      ];
+
+      const slugToTitle = (s) =>
+        s
+          .split("-")
+          .map((w) => {
+            if (w === "3d") return "3D";
+            if (w === "pbr") return "PBR";
+            if (w === "api") return "API";
+            return w.charAt(0).toUpperCase() + w.slice(1);
+          })
+          .join(" ");
+
+      // Demo read-stats + gradients so blog cards mirror the video-card layout.
+      const BLOG_META = [
+        { reads: 48200, date: "2025-04-18", grad: "from-[#c5f955] to-[#1f6f3f]" },
+        { reads: 39100, date: "2025-04-10", grad: "from-[#6ee7ff] to-[#1e3a8a]" },
+        { reads: 27600, date: "2025-03-28", grad: "from-[#fca5f1] to-[#7c2d6b]" },
+        { reads: 31900, date: "2025-03-15", grad: "from-[#fdba74] to-[#7c2d12]" },
+        { reads: 22400, date: "2025-03-02", grad: "from-[#a5b4fc] to-[#312e81]" },
+        { reads: 18800, date: "2025-02-20", grad: "from-[#fde047] to-[#713f12]" },
+        { reads: 26500, date: "2025-02-08", grad: "from-[#5eead4] to-[#134e4a]" },
+        { reads: 20100, date: "2025-01-25", grad: "from-[#f9a8d4] to-[#831843]" },
+      ];
+
+      // ---- State ----
+      let activeTab = "youtube"; // "youtube" | "blog"
+      let activePlaylist = "all"; // playlist id or "all"
+      let sort = "newest"; // "newest" | "hottest"
+
+      // ---- Helpers ----
+      const fmt = (n) => {
+        if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+        if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+        return String(n);
+      };
+      const relTime = (dateStr) => {
+        const days = Math.floor((Date.now() - new Date(dateStr)) / 86400000);
+        if (days < 30) return days + "d ago";
+        if (days < 365) return Math.floor(days / 30) + "mo ago";
+        return Math.floor(days / 365) + "y ago";
+      };
+      const eyeSvg = `<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+
+      // ---- Card renderers ----
+      function videoCard(v) {
+        return `
+          <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" class="group flex flex-col gap-6">
+            <div class="relative">
+              <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg"
+                   alt="${v.title.replace(/"/g, "&quot;")}"
+                   class="card-img block aspect-video w-full rounded-xl border border-bg-translucent object-cover select-none"
+                   onerror="this.style.background='linear-gradient(135deg,#262626,#0f0f0f)';this.removeAttribute('src');" />
+              <div class="absolute bottom-1.5 right-1.5 rounded-md bg-bg-modal-overlay px-2 py-1 text-xs font-bold text-label-title">${v.duration}</div>
+            </div>
+            <div class="flex flex-col gap-3">
+              <h2 class="text-base font-bold leading-normal text-label-title line-clamp-2">${v.title}</h2>
+              <div class="flex items-center justify-between gap-2 text-xs font-medium text-label-soft">
+                <div class="flex items-center gap-1.5"><span>Meshy</span><span>·</span><span>${relTime(v.date)}</span></div>
+                <div class="flex items-center gap-1.5">${eyeSvg}<span>${fmt(v.views)}</span></div>
+              </div>
+            </div>
+          </a>`;
+      }
+
+      function blogCard(slug, i) {
+        const m = BLOG_META[i] || BLOG_META[0];
+        const title = slugToTitle(slug);
+        return `
+          <a href="https://www.meshy.ai/tutorials/${slug}" target="_blank" rel="noopener" class="group flex flex-col gap-6">
+            <div class="relative">
+              <div class="card-img flex aspect-video w-full items-center justify-center rounded-xl border border-bg-translucent bg-gradient-to-br ${m.grad} select-none">
+                <svg viewBox="0 0 24 24" class="size-10 text-black/40" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6M8 14h8M8 17h5"/></svg>
+              </div>
+              <div class="absolute bottom-1.5 right-1.5 rounded-md bg-bg-modal-overlay px-2 py-1 text-xs font-bold text-label-title">Guide</div>
+            </div>
+            <div class="flex flex-col gap-3">
+              <h2 class="text-base font-bold leading-normal text-label-title line-clamp-2">${title}</h2>
+              <p class="-mt-1 truncate text-xs text-label-soft">meshy.ai/tutorials/${slug}</p>
+              <div class="flex items-center justify-between gap-2 text-xs font-medium text-label-soft">
+                <div class="flex items-center gap-1.5"><span>Meshy</span><span>·</span><span>${relTime(m.date)}</span></div>
+                <div class="flex items-center gap-1.5">${eyeSvg}<span>${fmt(m.reads)}</span></div>
+              </div>
+            </div>
+          </a>`;
+      }
+
+      // ---- Render ----
+      function render() {
+        const grid = document.getElementById("grid");
+        const activeFilter = document.getElementById("activeFilter");
+
+        if (activeTab === "blog") {
+          activeFilter.classList.add("hidden");
+          grid.innerHTML = BLOG_SLUGS.map((s, i) => blogCard(s, i)).join("");
+          return;
+        }
+
+        // youtube tab
+        let list = VIDEOS.slice();
+        if (activePlaylist !== "all") {
+          list = list.filter((v) => v.playlists.includes(activePlaylist));
+          const pl = PLAYLISTS.find((p) => p.id === activePlaylist);
+          document.getElementById("activeFilterLabel").textContent = "Playlist: " + (pl ? pl.title : "");
+          activeFilter.classList.remove("hidden");
+        } else {
+          activeFilter.classList.add("hidden");
+        }
+
+        if (sort === "hottest") list.sort((a, b) => b.views - a.views);
+        else list.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        grid.innerHTML = list.map(videoCard).join("");
+      }
+
+      // ---- Tab styling ----
+      function syncTabStyles() {
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          const isActive = btn.dataset.tab === activeTab;
+          btn.classList.toggle("text-accent-base", isActive);
+          btn.classList.toggle("text-label-base", !isActive);
+        });
+        document.querySelectorAll(".sort-btn").forEach((btn) => {
+          const isActive = btn.dataset.sort === sort;
+          btn.classList.toggle("text-accent-base", isActive);
+          btn.classList.toggle("text-label-base", !isActive);
+        });
+      }
+
+      // ---- Build playlist dropdown ----
+      const playlistList = document.getElementById("playlistList");
+      playlistList.innerHTML = PLAYLISTS.map(
+        (p) => `
+          <button class="playlist-item flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-label-base transition hover:bg-bg-base-hover" data-playlist="${p.id}">
+            <span>${p.title}</span>
+            <svg viewBox="0 0 24 24" class="size-3.5 text-label-soft" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
+          </button>`
+      ).join("");
+
+      // ---- Events ----
+      const ytTab = document.getElementById("ytTab");
+      const ytMenu = document.getElementById("ytMenu");
+      const ytCaret = document.getElementById("ytCaret");
+
+      function closeMenu() {
+        ytMenu.classList.add("hidden");
+        ytCaret.classList.remove("rotate-180");
+      }
+      function openMenu() {
+        ytMenu.classList.remove("hidden");
+        ytCaret.classList.add("rotate-180");
+      }
+
+      ytTab.addEventListener("click", (e) => {
+        e.stopPropagation();
+        // Activate the YouTube tab; toggle the playlist dropdown.
+        if (activeTab !== "youtube") {
+          activeTab = "youtube";
+          syncTabStyles();
+          render();
+        }
+        ytMenu.classList.contains("hidden") ? openMenu() : closeMenu();
+      });
+
+      // Playlist selection — keep "jump to that playlist's video list" behavior.
+      document.querySelectorAll(".playlist-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.stopPropagation();
+          activePlaylist = item.dataset.playlist;
+          activeTab = "youtube";
+          closeMenu();
+          syncTabStyles();
+          render();
+        });
+      });
+
+      document.querySelectorAll('.tab-btn[data-tab="blog"]').forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeTab = "blog";
+          closeMenu();
+          syncTabStyles();
+          render();
+        });
+      });
+
+      document.querySelectorAll(".sort-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          sort = btn.dataset.sort;
+          syncTabStyles();
+          render();
+        });
+      });
+
+      document.getElementById("clearFilter").addEventListener("click", () => {
+        activePlaylist = "all";
+        render();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!document.getElementById("ytWrap").contains(e.target)) closeMenu();
+      });
+
+      // ---- Init ----
+      syncTabStyles();
+      render();
+    </script>
+  </body>
+</html>
