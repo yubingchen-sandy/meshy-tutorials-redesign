@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorials · Meshy (v2 — Knowledge base)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "bg-base": "#181818",
+              "bg-base-hover": "#262626",
+              "bg-modal-overlay": "#00000099",
+              "bg-translucent": "#ffffff0d",
+              "bg-translucent-strong": "#ffffff1a",
+              "label-title": "#ffffff",
+              "label-base": "#dedede",
+              "label-soft": "#9b9b9b",
+              "accent-base": "#c5f955",
+              "accent-base-hover": "#a8e328",
+            },
+            maxWidth: { "8xl": "88rem" },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { background-color: #0f0f0f; color: #dedede; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+      .card-img { transition: transform 0.3s ease-out; }
+      .group:hover .card-img { transform: scale(1.02); }
+      ::-webkit-scrollbar { height: 6px; width: 6px; }
+      ::-webkit-scrollbar-thumb { background: #2e2e2e; border-radius: 9999px; }
+      .nav-item.active { color: #c5f955; background: #ffffff0d; }
+      .nav-section { color: #9b9b9b; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="mx-auto flex w-full max-w-8xl gap-8 px-4 py-8 md:px-6 lg:px-8">
+      <!-- Sidebar -->
+      <aside class="sticky top-8 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto rounded-xl border border-bg-translucent bg-bg-base p-4 lg:block">
+        <div class="mb-4 flex items-center gap-2">
+          <svg viewBox="0 0 24 24" class="size-5 text-accent-base" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/></svg>
+          <span class="text-sm font-bold text-label-title">Tutorials</span>
+        </div>
+
+        <input type="text" placeholder="Search tutorials..." class="mb-4 w-full rounded-lg border border-bg-translucent bg-[#0f0f0f] px-3 py-1.5 text-sm text-label-base outline-none placeholder:text-label-soft focus:border-accent-base/40" />
+
+        <nav class="flex flex-col gap-1 text-sm">
+          <a href="#" class="nav-item active flex items-center gap-2 rounded-lg px-3 py-1.5 font-medium">
+            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13 2-3 7h6l-3 11"/></svg>
+            Quickstart
+          </a>
+
+          <div class="nav-section mt-4 mb-1 px-3">Core features</div>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Image to 3D <span class="text-label-soft text-xs">12</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Text to 3D <span class="text-label-soft text-xs">8</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Texturing (PBR) <span class="text-label-soft text-xs">6</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Rigging <span class="text-label-soft text-xs">5</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Animation <span class="text-label-soft text-xs">7</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Multi-view <span class="text-label-soft text-xs">3</span></a>
+
+          <div class="nav-section mt-4 mb-1 px-3">Workflows</div>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Meshy + Blender <span class="text-label-soft text-xs">9</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Meshy + Unity <span class="text-label-soft text-xs">6</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Meshy + Unreal <span class="text-label-soft text-xs">4</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Meshy + 3D Printing <span class="text-label-soft text-xs">5</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Meshy + ZBrush <span class="text-label-soft text-xs">2</span></a>
+
+          <div class="nav-section mt-4 mb-1 px-3">Developers</div>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">API quickstart <span class="text-label-soft text-xs">4</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Webhooks <span class="text-label-soft text-xs">2</span></a>
+          <a href="#" class="nav-item flex items-center justify-between rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover hover:text-label-title">Common recipes <span class="text-label-soft text-xs">7</span></a>
+
+          <div class="mt-6 border-t border-bg-translucent pt-3">
+            <a href="#" class="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-label-soft hover:bg-bg-base-hover hover:text-label-title">
+              <span>All video walkthroughs</span>
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main -->
+      <main class="flex w-full flex-col gap-8 pb-24">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-1.5 text-sm text-label-soft" aria-label="Breadcrumb">
+          <a href="#" class="hover:text-label-base">Home</a>
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+          <span class="text-label-base">Tutorials</span>
+        </nav>
+
+        <!-- Hero -->
+        <header class="flex flex-col gap-3">
+          <h1 class="text-[40px] font-bold leading-tight text-label-title">Meshy Tutorials</h1>
+          <p class="max-w-2xl text-base text-label-base">Step-by-step guides to take you from an image or prompt to a production-ready 3D asset. Pick a feature, a workflow, or jump straight to the API.</p>
+        </header>
+
+        <!-- Quick start cards -->
+        <section class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <a href="#" class="group flex flex-col gap-3 rounded-xl border border-bg-translucent bg-bg-base p-5 transition hover:border-accent-base/30 hover:bg-bg-base-hover">
+            <div class="flex size-10 items-center justify-center rounded-lg bg-accent-base/10 text-accent-base">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13 2-3 7h6l-3 11"/></svg>
+            </div>
+            <h3 class="text-base font-bold text-label-title">Quickstart</h3>
+            <p class="text-sm text-label-soft">Generate your first 3D model in under 5 minutes.</p>
+          </a>
+          <a href="#" class="group flex flex-col gap-3 rounded-xl border border-bg-translucent bg-bg-base p-5 transition hover:border-accent-base/30 hover:bg-bg-base-hover">
+            <div class="flex size-10 items-center justify-center rounded-lg bg-accent-base/10 text-accent-base">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h12M3 17h6"/></svg>
+            </div>
+            <h3 class="text-base font-bold text-label-title">By feature</h3>
+            <p class="text-sm text-label-soft">Image / Text to 3D, Texturing, Rigging, Animation.</p>
+          </a>
+          <a href="#" class="group flex flex-col gap-3 rounded-xl border border-bg-translucent bg-bg-base p-5 transition hover:border-accent-base/30 hover:bg-bg-base-hover">
+            <div class="flex size-10 items-center justify-center rounded-lg bg-accent-base/10 text-accent-base">
+              <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7"/></svg>
+            </div>
+            <h3 class="text-base font-bold text-label-title">Workflows</h3>
+            <p class="text-sm text-label-soft">Blender, Unity, Unreal, 3D printing, ZBrush.</p>
+          </a>
+        </section>
+
+        <!-- Featured (long card) -->
+        <section class="flex flex-col gap-3">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-label-soft">Featured tutorial</h2>
+          <a href="v2-detail.html" class="group grid grid-cols-1 overflow-hidden rounded-xl border border-bg-translucent bg-bg-base md:grid-cols-2">
+            <div class="card-img aspect-video bg-gradient-to-br from-[#c5f955] to-[#1f6f3f] md:aspect-auto"></div>
+            <div class="flex flex-col justify-center gap-4 p-6 md:p-8">
+              <span class="inline-flex w-fit items-center gap-1 rounded-full bg-accent-base/10 px-2.5 py-1 text-xs font-medium text-accent-base">Most popular</span>
+              <h3 class="text-2xl font-bold text-label-title">How to auto-rig a character in Meshy</h3>
+              <p class="text-sm text-label-base">Take a static character mesh and turn it into a fully rigged model ready for Mixamo or Blender — without leaving Meshy. 6 steps, ~10 minutes.</p>
+              <div class="flex items-center gap-4 text-xs text-label-soft">
+                <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg> 10 min</span>
+                <span>·</span>
+                <span>Beginner</span>
+                <span>·</span>
+                <span>Rigging</span>
+              </div>
+            </div>
+          </a>
+        </section>
+
+        <!-- Step-by-step guides -->
+        <section class="flex flex-col gap-4">
+          <div class="flex items-end justify-between">
+            <h2 class="text-xl font-bold text-label-title">Step-by-step guides</h2>
+            <a href="#" class="text-sm text-label-soft hover:text-label-title">View all →</a>
+          </div>
+          <div id="guideGrid" class="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3"></div>
+        </section>
+
+        <!-- Video walkthroughs (now a section, not the IA root) -->
+        <section class="flex flex-col gap-4">
+          <div class="flex items-end justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-label-title">Video walkthroughs</h2>
+              <p class="text-sm text-label-soft">Prefer watching? These pair with the written guides above.</p>
+            </div>
+            <a href="#" class="text-sm text-label-soft hover:text-label-title">All videos →</a>
+          </div>
+          <div id="videoGrid" class="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-4"></div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="flex flex-col gap-4">
+          <h2 class="text-xl font-bold text-label-title">FAQ</h2>
+          <div id="faqList" class="flex flex-col divide-y divide-bg-translucent rounded-xl border border-bg-translucent bg-bg-base"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const GUIDES = [
+        { slug: "image-to-3d-model-complete-guide", topic: "Image to 3D", level: "Beginner", min: 6 },
+        { slug: "text-to-3d-model-tutorial",       topic: "Text to 3D",  level: "Beginner", min: 5 },
+        { slug: "photo-to-3d-printable-model",      topic: "3D Printing", level: "Intermediate", min: 12 },
+        { slug: "3d-model-for-unity-workflow",      topic: "Unity",        level: "Intermediate", min: 9 },
+        { slug: "character-auto-rigging-workflow",  topic: "Rigging",      level: "Beginner", min: 10 },
+        { slug: "pbr-texturing-with-meshy",         topic: "Texturing",    level: "Intermediate", min: 8 },
+        { slug: "api-quickstart-image-to-3d",       topic: "API",          level: "Developer", min: 7 },
+        { slug: "export-to-blender-workflow",       topic: "Blender",      level: "Beginner", min: 4 },
+      ];
+      const VIDEOS = [
+        { id: "DRYu_M76qoM", title: "Bring your characters to life: 3D animation in a few clicks", duration: "6:12" },
+        { id: "2faDCnIxfuw", title: "Meshy + Blender + Mixamo: animated characters in minutes", duration: "9:48" },
+        { id: "WvDCRRX65Rw", title: "From text to 3D sculpture", duration: "11:20" },
+        { id: "cH6JN2OoISI", title: "Optimize texture quality in just a few clicks", duration: "4:36" },
+      ];
+      const FAQS = [
+        { q: "Do I need to install anything to follow these tutorials?", a: "No. All tutorials run in the Meshy web app. Workflows that mention Blender, Unity, etc. require the corresponding tool installed locally." },
+        { q: "Are these tutorials free?", a: "Yes. Reading and following the steps is free. Generations themselves use credits in your Meshy account; the Free plan includes a daily allowance." },
+        { q: "Where can I find the source files?", a: "Each tutorial provides downloadable starter assets where relevant. Look for the “Download starter” button below the intro." },
+        { q: "Can I use the output commercially?", a: "Yes, on paid plans. See Pricing for the per-plan commercial-use terms." },
+      ];
+
+      const grad = ["from-[#c5f955] to-[#1f6f3f]", "from-[#6ee7ff] to-[#1e3a8a]", "from-[#fca5f1] to-[#7c2d6b]", "from-[#fdba74] to-[#7c2d12]", "from-[#a5b4fc] to-[#312e81]", "from-[#fde047] to-[#713f12]", "from-[#5eead4] to-[#134e4a]", "from-[#f9a8d4] to-[#831843]"];
+
+      const slugToTitle = (s) => s.split("-").map((w) => { if (w === "3d") return "3D"; if (w === "pbr") return "PBR"; if (w === "api") return "API"; return w[0].toUpperCase() + w.slice(1); }).join(" ");
+
+      document.getElementById("guideGrid").innerHTML = GUIDES.map((g, i) => `
+        <a href="v2-detail.html" class="group flex flex-col gap-4">
+          <div class="card-img flex aspect-video w-full items-center justify-center rounded-xl border border-bg-translucent bg-gradient-to-br ${grad[i % grad.length]}">
+            <svg viewBox="0 0 24 24" class="size-10 text-black/40" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6M8 14h8M8 17h5"/></svg>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-1.5 text-xs text-label-soft">
+              <span>${g.topic}</span><span>·</span><span>${g.level}</span><span>·</span><span>${g.min} min</span>
+            </div>
+            <h3 class="text-base font-bold leading-snug text-label-title">${slugToTitle(g.slug)}</h3>
+          </div>
+        </a>`).join("");
+
+      document.getElementById("videoGrid").innerHTML = VIDEOS.map((v) => `
+        <a href="https://youtu.be/${v.id}" target="_blank" rel="noopener" class="group flex flex-col gap-3">
+          <div class="relative">
+            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}" class="card-img block aspect-video w-full rounded-xl border border-bg-translucent object-cover" />
+            <div class="absolute bottom-1.5 right-1.5 rounded-md bg-bg-modal-overlay px-2 py-1 text-xs font-bold text-label-title">${v.duration}</div>
+          </div>
+          <h4 class="line-clamp-2 text-sm font-bold text-label-title">${v.title}</h4>
+        </a>`).join("");
+
+      document.getElementById("faqList").innerHTML = FAQS.map((f, i) => `
+        <details class="group p-5" ${i === 0 ? "open" : ""}>
+          <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-label-title">
+            <span>${f.q}</span>
+            <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-label-soft transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-label-base">${f.a}</p>
+        </details>`).join("");
+    </script>
+  </body>
+</html>

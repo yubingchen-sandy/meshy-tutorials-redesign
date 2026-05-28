@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to auto-rig a character in Meshy · Tutorials</title>
+    <meta name="description" content="Take a static character mesh and turn it into a fully rigged model ready for Mixamo or Blender — without leaving Meshy. 6 steps, ~10 minutes." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "bg-base": "#181818",
+              "bg-base-hover": "#262626",
+              "bg-translucent": "#ffffff0d",
+              "bg-translucent-strong": "#ffffff1a",
+              "label-title": "#ffffff",
+              "label-base": "#dedede",
+              "label-soft": "#9b9b9b",
+              "accent-base": "#c5f955",
+            },
+            maxWidth: { "8xl": "88rem" },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { background-color: #0f0f0f; color: #dedede; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+      .prose h2 { color: #fff; font-size: 24px; font-weight: 700; margin-top: 40px; margin-bottom: 12px; scroll-margin-top: 80px; }
+      .prose h3 { color: #fff; font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; }
+      .prose p { color: #dedede; line-height: 1.7; margin-bottom: 12px; }
+      .prose ul { margin-bottom: 16px; padding-left: 1.25rem; list-style: disc; }
+      .prose li { color: #dedede; margin-bottom: 4px; }
+      .prose code { background: #ffffff1a; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #c5f955; }
+      .toc a.active { color: #c5f955; }
+    </style>
+
+    <!-- HowTo + FAQPage schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.meshy.ai/"},
+            {"@type": "ListItem", "position": 2, "name": "Tutorials", "item": "https://www.meshy.ai/tutorials"},
+            {"@type": "ListItem", "position": 3, "name": "Rigging", "item": "https://www.meshy.ai/tutorials/rigging"},
+            {"@type": "ListItem", "position": 4, "name": "Auto-rigging", "item": "https://www.meshy.ai/tutorials/rigging/auto-rigging"}
+          ]
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to auto-rig a character in Meshy",
+          "description": "Take a static character mesh and turn it into a fully rigged model ready for Mixamo or Blender.",
+          "totalTime": "PT10M",
+          "step": [
+            {"@type": "HowToStep", "name": "Open your model", "text": "Open the character model from your Workspace library."},
+            {"@type": "HowToStep", "name": "Choose rig type", "text": "Pick humanoid or quadruped depending on your character."},
+            {"@type": "HowToStep", "name": "Place joints", "text": "Confirm the predicted joint positions or drag to adjust."},
+            {"@type": "HowToStep", "name": "Generate rig", "text": "Click Generate. Rigging takes ~30 seconds."},
+            {"@type": "HowToStep", "name": "Test pose", "text": "Try a pose preset to verify the rig deforms cleanly."},
+            {"@type": "HowToStep", "name": "Export", "text": "Export as FBX with skin weights, or send to Mixamo."}
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {"@type": "Question", "name": "Does this work for non-humanoid characters?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — pick the Quadruped rig type for animals, or use the Custom skeleton option."}},
+            {"@type": "Question", "name": "Can I edit the rig manually?", "acceptedAnswer": {"@type": "Answer", "text": "After export to FBX you can edit in Blender or Maya; the skin weights are preserved."}},
+            {"@type": "Question", "name": "Why are my fingers not deforming?", "acceptedAnswer": {"@type": "Answer", "text": "The base auto-rig includes only the main hand joint. For finger control, enable the “Finger rig” add-on before generating."}}
+          ]
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div class="mx-auto flex w-full max-w-8xl gap-8 px-4 py-8 md:px-6 lg:px-8">
+      <!-- Sidebar (compact) -->
+      <aside class="sticky top-8 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto rounded-xl border border-bg-translucent bg-bg-base p-4 lg:block">
+        <a href="v2.html" class="mb-4 flex items-center gap-2 text-sm font-bold text-label-title">
+          <svg viewBox="0 0 24 24" class="size-5 text-accent-base" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/></svg>
+          Tutorials
+        </a>
+        <nav class="flex flex-col gap-1 text-sm">
+          <a href="v2.html" class="rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover">← All tutorials</a>
+          <div class="mt-4 mb-1 px-3 text-[11px] uppercase tracking-wider text-label-soft">Rigging</div>
+          <a href="#" class="rounded-lg bg-bg-translucent px-3 py-1.5 font-medium text-accent-base">Auto-rigging a character</a>
+          <a href="#" class="rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover">Quadruped rigs</a>
+          <a href="#" class="rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover">Custom skeletons</a>
+          <a href="#" class="rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover">Mixamo handoff</a>
+          <a href="#" class="rounded-lg px-3 py-1.5 text-label-base hover:bg-bg-base-hover">Finger rigging add-on</a>
+        </nav>
+      </aside>
+
+      <!-- Article -->
+      <article class="flex w-full min-w-0 max-w-3xl flex-col">
+        <!-- Breadcrumbs -->
+        <nav class="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-label-soft" aria-label="Breadcrumb">
+          <a href="#" class="hover:text-label-base">Home</a>
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+          <a href="v2.html" class="hover:text-label-base">Tutorials</a>
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+          <a href="#" class="hover:text-label-base">Rigging</a>
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+          <span class="text-label-base">Auto-rigging</span>
+        </nav>
+
+        <!-- Title block -->
+        <header class="flex flex-col gap-4">
+          <div class="flex flex-wrap items-center gap-2 text-xs text-label-soft">
+            <span class="rounded-full bg-accent-base/10 px-2.5 py-1 font-medium text-accent-base">HowTo</span>
+            <span>·</span><span>Rigging</span>
+            <span>·</span><span>Beginner</span>
+            <span>·</span>
+            <span class="flex items-center gap-1"><svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg> 10 min</span>
+          </div>
+          <h1 class="text-[36px] font-bold leading-tight text-label-title">How to auto-rig a character in Meshy</h1>
+          <p class="text-base text-label-base">Take a static character mesh and turn it into a fully rigged model ready for Mixamo or Blender — without leaving Meshy. 6 steps, ~10 minutes.</p>
+
+          <!-- Hero (annotated screenshot placeholder, not a video) -->
+          <div class="mt-2 flex aspect-video w-full items-center justify-center rounded-xl border border-bg-translucent bg-gradient-to-br from-[#c5f955] to-[#1f6f3f]">
+            <span class="rounded-md bg-bg-modal-overlay px-3 py-1.5 text-xs font-bold text-label-title">Annotated screenshot</span>
+          </div>
+
+          <!-- Inline CTA -->
+          <div class="mt-2 flex flex-wrap items-center gap-3 rounded-xl border border-accent-base/30 bg-accent-base/5 p-4">
+            <span class="text-sm text-label-base">Try this in Meshy in real time —</span>
+            <a href="#" class="rounded-lg bg-accent-base px-4 py-1.5 text-sm font-bold text-black hover:bg-accent-base/90">Open in Workspace →</a>
+          </div>
+        </header>
+
+        <div class="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_180px]">
+          <!-- Body -->
+          <div class="prose">
+            <h2 id="prerequisites">What you'll need</h2>
+            <ul>
+              <li>A character mesh (from <a href="#" class="text-accent-base hover:underline">Image to 3D</a> or <a href="#" class="text-accent-base hover:underline">Text to 3D</a>)</li>
+              <li>A Meshy account on the Free plan or above</li>
+              <li>Optionally: Blender 3.6+ or Mixamo for downstream animation</li>
+            </ul>
+
+            <h2 id="step-1">Step 1 — Open your model</h2>
+            <p>From your Workspace library, click the character you want to rig. In the right panel, choose <code>Rigging</code> from the toolbar.</p>
+
+            <h2 id="step-2">Step 2 — Choose rig type</h2>
+            <p>Pick the skeleton template that matches your character:</p>
+            <ul>
+              <li><strong>Humanoid</strong> — bipedal characters with arms and legs.</li>
+              <li><strong>Quadruped</strong> — animals, creatures.</li>
+              <li><strong>Custom</strong> — upload your own skeleton.</li>
+            </ul>
+            <h3>Tip</h3>
+            <p>If your character is stylized (long limbs, large head), Humanoid still works — joints will be auto-fit to your mesh proportions.</p>
+
+            <h2 id="step-3">Step 3 — Confirm joint placement</h2>
+            <p>Meshy predicts joint positions. Inspect them in the 3D viewer; drag any joint to refine. The mirror toggle keeps left/right symmetric.</p>
+
+            <h2 id="step-4">Step 4 — Generate the rig</h2>
+            <p>Click <code>Generate rig</code>. Rigging usually completes in 20–40 seconds. You'll get a fully skinned mesh with bone hierarchy.</p>
+
+            <h2 id="step-5">Step 5 — Test with a pose preset</h2>
+            <p>Apply one of the built-in pose presets (T-pose, A-pose, walk) to verify the rig deforms cleanly. If something looks off:</p>
+            <ul>
+              <li>Reopen Step 3 and adjust the joint position</li>
+              <li>Or enable <code>Refine skin weights</code> in the rig panel</li>
+            </ul>
+
+            <h2 id="step-6">Step 6 — Export</h2>
+            <p>Click <code>Export</code> and choose:</p>
+            <ul>
+              <li><strong>FBX with skin weights</strong> — for Blender / Maya / Unity / Unreal.</li>
+              <li><strong>Send to Mixamo</strong> — opens the model directly in Mixamo.</li>
+              <li><strong>GLB</strong> — for web (Three.js, real-time previews).</li>
+            </ul>
+
+            <h2 id="video">Optional: watch the walkthrough</h2>
+            <p>If you prefer to watch:</p>
+            <div class="flex aspect-video w-full items-center justify-center rounded-xl border border-bg-translucent bg-[#0f0f0f]">
+              <span class="text-sm text-label-soft">[Embedded YouTube — only because this video maps step-for-step to the article above]</span>
+            </div>
+
+            <h2 id="faq">FAQ</h2>
+            <div class="flex flex-col divide-y divide-bg-translucent rounded-xl border border-bg-translucent bg-bg-base">
+              <details class="group p-5" open>
+                <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-label-title">
+                  Does this work for non-humanoid characters?
+                  <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-label-soft transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+                </summary>
+                <p class="mt-3 text-sm text-label-base">Yes — pick the Quadruped rig type for animals, or use the Custom skeleton option to upload your own bone hierarchy.</p>
+              </details>
+              <details class="group p-5">
+                <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-label-title">
+                  Can I edit the rig manually?
+                  <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-label-soft transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+                </summary>
+                <p class="mt-3 text-sm text-label-base">After export to FBX you can edit in Blender or Maya; the skin weights are preserved.</p>
+              </details>
+              <details class="group p-5">
+                <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-label-title">
+                  Why are my fingers not deforming?
+                  <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-label-soft transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+                </summary>
+                <p class="mt-3 text-sm text-label-base">The base auto-rig includes only the main hand joint. For finger control, enable the "Finger rig" add-on before generating.</p>
+              </details>
+            </div>
+
+            <h2 id="related">Related tutorials</h2>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <a href="#" class="flex flex-col gap-2 rounded-xl border border-bg-translucent bg-bg-base p-4 hover:bg-bg-base-hover">
+                <div class="text-xs text-label-soft">Animation · Beginner · 8 min</div>
+                <div class="font-semibold text-label-title">Animate a rigged character with Mixamo</div>
+              </a>
+              <a href="#" class="flex flex-col gap-2 rounded-xl border border-bg-translucent bg-bg-base p-4 hover:bg-bg-base-hover">
+                <div class="text-xs text-label-soft">Workflows · Intermediate · 12 min</div>
+                <div class="font-semibold text-label-title">Export a rigged character to Unity</div>
+              </a>
+            </div>
+
+            <!-- Footer CTA -->
+            <div class="mt-10 flex flex-col items-start gap-3 rounded-xl border border-accent-base/30 bg-accent-base/5 p-6">
+              <div class="text-lg font-bold text-label-title">Ready to try it yourself?</div>
+              <p class="text-sm text-label-base">Open Meshy and follow this tutorial in your own Workspace. Free plan included.</p>
+              <a href="#" class="rounded-lg bg-accent-base px-5 py-2 text-sm font-bold text-black hover:bg-accent-base/90">Try this in Workspace →</a>
+            </div>
+          </div>
+
+          <!-- TOC -->
+          <aside class="toc hidden lg:block">
+            <div class="sticky top-8 flex flex-col gap-2 text-sm">
+              <div class="text-[11px] font-semibold uppercase tracking-wider text-label-soft">On this page</div>
+              <a href="#prerequisites" class="text-label-base hover:text-accent-base">What you'll need</a>
+              <a href="#step-1" class="text-label-base hover:text-accent-base">1 · Open your model</a>
+              <a href="#step-2" class="text-label-base hover:text-accent-base">2 · Choose rig type</a>
+              <a href="#step-3" class="text-label-base hover:text-accent-base">3 · Confirm joints</a>
+              <a href="#step-4" class="text-label-base hover:text-accent-base">4 · Generate</a>
+              <a href="#step-5" class="text-label-base hover:text-accent-base">5 · Test pose</a>
+              <a href="#step-6" class="text-label-base hover:text-accent-base">6 · Export</a>
+              <a href="#video" class="text-label-base hover:text-accent-base">Watch the video</a>
+              <a href="#faq" class="text-label-base hover:text-accent-base">FAQ</a>
+              <a href="#related" class="text-label-base hover:text-accent-base">Related</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>
