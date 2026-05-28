@@ -100,7 +100,7 @@
                 </div>
               </div>
 
-              <!-- Blog Guides tab -->
+              <!-- Guides tab (the 8 written tutorial pages) -->
               <button
                 data-tab="blog"
                 class="tab-btn flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-label-base transition hover:bg-bg-base-hover"
@@ -108,7 +108,7 @@
                 <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16M4 12h16M4 19h10" />
                 </svg>
-                <span>Blog Guides</span>
+                <span>Guides</span>
               </button>
             </div>
           </div>
@@ -166,21 +166,46 @@
         { id: "PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq", title: "Meshy + 3D Printing" },
       ];
 
-      // ---- Sample YouTube videos (real titles/ids/thumbnails, demo metrics) ----
-      const VIDEOS = [
-        { id: "DRYu_M76qoM", title: "Easy 3D Animation with Meshy: Bring Characters to Life in Just a Few Clicks", views: 184000, date: "2024-07-31", duration: "6:12", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
-        { id: "xcJljUhgvS4", title: "Easy 3D Quadruped Animation with Meshy - It's time to walk the pet!", views: 96500, date: "2024-07-31", duration: "5:01", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
-        { id: "2faDCnIxfuw", title: "Fast & Easy Way to Create Animated Characters | Meshy + Blender + Mixamo", views: 241000, date: "2024-06-18", duration: "9:48", playlists: ["PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3"] },
-        { id: "cH6JN2OoISI", title: "How to Optimize Texture Quality with just a Few Clicks | Meshy Tutorial", views: 73200, date: "2024-05-23", duration: "4:36", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
-        { id: "PH9ULZUB3gM", title: "How to Easily Remove 3D flaws with Smart Healing | Meshy Tutorial", views: 58900, date: "2024-05-23", duration: "3:54", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
-        { id: "WvDCRRX65Rw", title: "From Text to 3D Sculpture: Master Advanced Modeling Techniques", views: 132000, date: "2024-05-20", duration: "11:20", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
-        { id: "AxYIn9jo4q4", title: "Mastering Lifelike CG Characters: Using Generative AI in Your 3D Workflow", views: 88400, date: "2024-05-10", duration: "8:05", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
-        { id: "2nfb0b-YPCI", title: "Meshy + Blender: Game-Ready Props in Minutes", views: 154000, date: "2024-04-28", duration: "7:33", playlists: ["PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3", "PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
-        { id: "1Qm0YpqQv0E", title: "From Meshy to 3D Print: Preparing a Watertight Model", views: 64700, date: "2024-04-15", duration: "10:12", playlists: ["PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq"] },
-        { id: "3kU8Yz9oQpE", title: "Slicing & Supports: 3D Printing a Meshy Figurine", views: 41200, date: "2024-04-02", duration: "12:40", playlists: ["PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq"] },
-        { id: "9aBcD3fGhIj", title: "Image to 3D in Under 60 Seconds — Meshy Quick Guide", views: 209000, date: "2024-03-20", duration: "1:58", playlists: ["PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis"] },
-        { id: "kLmN0pQrStU", title: "Retopology & PBR Textures for Game Engines", views: 77800, date: "2024-03-05", duration: "9:21", playlists: ["PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23"] },
+      // ---- Real official videos (from static/youtube-tutorials.json, official+video only) ----
+      // Playlist membership is inferred from title keywords here; production uses
+      // API-returned playlistIds and may differ. Views are demo placeholders.
+      const RAW_VIDEOS = [
+        { id: "DRYu_M76qoM", title: "Easy 3D Animation with Meshy: Bring Characters to Life in Just a Few Clicks", date: "2024-07-31", duration: "6:12", views: 184000 },
+        { id: "xcJljUhgvS4", title: "Easy 3D Quadruped Animation with Meshy - It's time to walk the pet!", date: "2024-07-31", duration: "5:01", views: 96500 },
+        { id: "2faDCnIxfuw", title: "Fast & Easy Way to Create Animated Characters | Meshy + Blender + Mixamo", date: "2024-06-18", duration: "9:48", views: 241000 },
+        { id: "cH6JN2OoISI", title: "How to Optimize Texture Quality with just a Few Clicks | Meshy Tutorial", date: "2024-05-23", duration: "4:36", views: 73200 },
+        { id: "PH9ULZUB3gM", title: "How to Easily Remove 3D flaws with Smart Healing | Meshy Tutorial", date: "2024-05-23", duration: "3:54", views: 58900 },
+        { id: "WvDCRRX65Rw", title: "From Text to 3D Sculpture: Master Advanced Modeling Techniques", date: "2024-05-20", duration: "11:20", views: 132000 },
+        { id: "AxYIn9jo4q4", title: "Mastering Lifelike CG Characters: Using Generative AI in Your 3D Workflow", date: "2024-04-23", duration: "8:05", views: 88400 },
+        { id: "RT9LT-URI8I", title: "Meshy + ZBrush: Create Unique Cartoon Characters with AI", date: "2024-04-15", duration: "7:21", views: 64300 },
+        { id: "vFnfh0-1w58", title: "Introducing the Meshy Prompt Library: Effortlessly Generate Awesome 3D Models!", date: "2024-04-12", duration: "2:48", views: 51200 },
+        { id: "0OyjSSZrsuI", title: "How to Optimize the Mesh with just a Few Clicks | Meshy Tutorial", date: "2024-04-09", duration: "3:42", views: 47800 },
+        { id: "NZtakYaX6Gs", title: "How to fix imperfections in your 3D generation | Meshy Tutorial", date: "2024-04-02", duration: "4:15", views: 39600 },
+        { id: "1SVFZakFuws", title: "Meshy + Blender: A New Way To Make 3D Characters for Games", date: "2024-03-25", duration: "9:30", views: 168000 },
+        { id: "ISyKp6cWk2E", title: "Meshy + Blender: How to Create a Stunning Low-poly World with AI", date: "2024-03-13", duration: "8:18", views: 142000 },
+        { id: "QdGRd44BNmo", title: "Meshy + Blender: Animate 3D Characters in 2 Minutes", date: "2024-02-22", duration: "2:24", views: 198000 },
+        { id: "0pIXhOXE1W0", title: "How to Make Voxel Assets in 1 MINUTE | Meshy + MagicaVoxel", date: "2024-01-24", duration: "1:36", views: 87100 },
+        { id: "49jT2JutYXs", title: "How to Generate Texture and 3D Models with Meshy Web | A beginner Tutorial", date: "2023-08-28", duration: "6:54", views: 311000 },
+        { id: "sgVRD0ftwA4", title: "Next-Level-Textures with AI: Meshy Soars with 4K Magic!", date: "2023-11-22", duration: "3:12", views: 56800 },
+        { id: "ERJau-NRxdo", title: "How to Craft 3D Christmas Elements with Text to 3D | Meshy Tutorial", date: "2023-12-08", duration: "2:48", views: 42400 },
+        { id: "kLxlAfFFx7g", title: "Meshy + Blender: Stylized AI Texturing for Blender models", date: "2023-12-07", duration: "5:42", views: 78500 },
+        { id: "Zt4933kK20c", title: "How to Use Style Control for Text to Texture | Meshy Tutorial", date: "2023-11-16", duration: "3:24", views: 33800 },
+        { id: "Udc9yH2CVh4", title: "Meshy + Unity: Empowering Your Scenes with AI Texturing - Plugin Showcase", date: "2023-12-14", duration: "4:48", views: 91200 },
       ];
+
+      // Heuristic playlist classification from title (a video can belong to multiple).
+      function classify(t) {
+        const s = t.toLowerCase();
+        const pls = [];
+        if (s.includes("blender")) pls.push("PL9fRDm1nBS4KHZ7GCLHz8jr2WW18ggo-3");
+        if (s.includes("unity") || s.includes("unreal") || s.includes("magicavoxel") || s.includes("for games")) pls.push("PL9fRDm1nBS4JI0S04gYIEZlalrPz9gx23");
+        if (s.includes("3d print") || s.includes("3d-print") || s.includes("printable") || s.includes("printing")) pls.push("PL9fRDm1nBS4LE3GX01D291aTe4YxM0mIq");
+        // Quick Guide = anything that didn't land in a workflow-specific playlist.
+        if (pls.length === 0) pls.push("PL9fRDm1nBS4I1v7s5PKHVi9At7gG_iuis");
+        return pls;
+      }
+
+      const VIDEOS = RAW_VIDEOS.map((v) => ({ ...v, playlists: classify(v.title) }));
 
       // ---- Blog Guides (first 8 from the requested slugs) ----
       const BLOG_SLUGS = [
@@ -321,15 +346,30 @@
         });
       }
 
-      // ---- Build playlist dropdown ----
+      // ---- Build playlist dropdown (counts derived from VIDEOS; hide empty) ----
+      const playlistCounts = PLAYLISTS.reduce((acc, p) => {
+        acc[p.id] = VIDEOS.filter((v) => v.playlists.includes(p.id)).length;
+        return acc;
+      }, {});
       const playlistList = document.getElementById("playlistList");
-      playlistList.innerHTML = PLAYLISTS.map(
-        (p) => `
-          <button class="playlist-item flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-label-base transition hover:bg-bg-base-hover" data-playlist="${p.id}">
-            <span>${p.title}</span>
-            <svg viewBox="0 0 24 24" class="size-3.5 text-label-soft" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/></svg>
-          </button>`
-      ).join("");
+      playlistList.innerHTML = PLAYLISTS
+        .filter((p) => playlistCounts[p.id] > 0) // hide categories with 0 videos
+        .map(
+          (p) => `
+            <button class="playlist-item flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-label-base transition hover:bg-bg-base-hover" data-playlist="${p.id}">
+              <span>${p.title}</span>
+              <span class="text-label-soft text-xs">${playlistCounts[p.id]}</span>
+            </button>`
+        )
+        .join("");
+      // Also show count on the "All" item.
+      const allItem = document.querySelector('.playlist-item[data-playlist="all"]');
+      if (allItem) {
+        allItem.insertAdjacentHTML(
+          "beforeend",
+          `<span class="text-label-soft text-xs">${VIDEOS.length}</span>`
+        );
+      }
 
       // ---- Events ----
       const ytTab = document.getElementById("ytTab");
