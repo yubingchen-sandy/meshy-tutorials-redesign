@@ -38,14 +38,41 @@
     </style>
   </head>
   <body class="min-h-screen">
-    <div class="mx-auto flex w-full max-w-8xl gap-8 px-4 py-8 md:px-6 lg:px-8">
-      <!-- Sidebar -->
-      <aside class="sticky top-8 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto rounded-xl border border-bg-translucent bg-bg-base p-4 lg:block">
-        <div class="mb-6 flex items-center gap-2">
-          <svg viewBox="0 0 24 24" class="size-5 text-accent-base" fill="currentColor"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/></svg>
-          <span class="text-sm font-bold text-label-title">Tutorials</span>
+    <!-- Global meshy.ai header (mirrors the production header layout: logo + center nav + auth CTAs) -->
+    <header class="sticky inset-x-0 top-0 z-50 flex h-[72px] w-full items-center bg-[#0f0f0f]/80 backdrop-blur-md">
+      <div class="mx-auto flex w-full max-w-8xl items-center justify-between gap-6 px-4 md:px-6 lg:px-8">
+        <a href="/" aria-label="Meshy" class="flex items-center">
+          <!-- Simplified Meshy mark -->
+          <svg viewBox="0 0 32 32" class="size-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 3 4 10v12l12 7 12-7V10L16 3Z" fill="#C5F955"/>
+            <path d="M16 8.5 9 12.5v7l7 4 7-4v-7l-7-4Z" fill="#FF3E8F"/>
+          </svg>
+          <span class="ml-2 text-base font-bold text-label-title">Meshy</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm font-medium text-label-base md:flex">
+          <a href="#" class="hover:text-label-title">Resources</a>
+          <a href="#" class="hover:text-label-title">Pricing</a>
+          <a href="#" class="hover:text-label-title">API</a>
+          <a href="#" class="hover:text-label-title">Contact Sales</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="#" class="text-sm font-medium text-label-base hover:text-label-title">Log in</a>
+          <button class="rounded-full bg-accent-base px-4 py-1.5 text-sm font-bold text-black hover:bg-accent-base-hover">Sign Up Free</button>
         </div>
+      </div>
+    </header>
 
+    <div class="mx-auto w-full max-w-8xl px-4 md:px-6 lg:px-8">
+      <!-- Breadcrumbs (top-level, full-width row — left-aligned to page padding, not indented into main) -->
+      <nav class="flex items-center gap-1.5 py-6 text-sm text-label-soft" aria-label="Breadcrumb">
+        <a href="#" class="hover:text-label-base">Home</a>
+        <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+        <span class="text-label-base">Tutorials</span>
+      </nav>
+
+      <div class="flex w-full gap-8 pb-24">
+      <!-- Sidebar (no header label needed — breadcrumb above already says "Tutorials") -->
+      <aside class="sticky top-[88px] hidden h-[calc(100vh-7rem)] w-64 shrink-0 overflow-y-auto rounded-xl border border-bg-translucent bg-bg-base p-4 lg:block">
         <nav id="sideNav" class="flex flex-col gap-1 text-sm">
           <a href="#" class="nav-item flex items-center gap-2 rounded-lg px-3 py-1.5 font-medium text-label-base hover:bg-bg-base-hover hover:text-label-title" data-cat="__all__">
             <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h12M3 17h6"/></svg>
@@ -79,14 +106,7 @@
       </aside>
 
       <!-- Main -->
-      <main class="flex w-full flex-col gap-8 pb-24">
-        <!-- Breadcrumbs -->
-        <nav class="flex items-center gap-1.5 text-sm text-label-soft" aria-label="Breadcrumb">
-          <a href="#" class="hover:text-label-base">Home</a>
-          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
-          <span class="text-label-base">Tutorials</span>
-        </nav>
-
+      <main class="flex w-full min-w-0 flex-col gap-8">
         <!-- Hero -->
         <header class="flex flex-col gap-3">
           <h1 class="text-[40px] font-bold leading-tight text-label-title">Meshy Tutorials</h1>
@@ -137,6 +157,7 @@
           <div id="faqList" class="flex flex-col divide-y divide-bg-translucent rounded-xl border border-bg-translucent bg-bg-base"></div>
         </section>
       </main>
+      </div>
     </div>
 
     <script>
