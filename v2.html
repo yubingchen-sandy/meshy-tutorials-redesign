@@ -138,7 +138,7 @@
           <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 id="gridTitle" class="text-xl font-bold text-label-title">All tutorials</h2>
-              <p id="gridSubtitle" class="text-sm text-label-soft">Guides and video walkthroughs, mixed. Filter by type or pick a topic from the left.</p>
+              <p id="gridSubtitle" class="text-sm text-label-soft">Guides and video walkthroughs, mixed. Guides open the article; videos open on YouTube.</p>
             </div>
             <!-- Type pills -->
             <div id="typeFilter" class="flex shrink-0 gap-1 rounded-lg border border-bg-translucent bg-bg-base p-1 text-sm">
@@ -268,6 +268,8 @@
               <div class="absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md bg-bg-modal-overlay px-2 py-0.5 text-[11px] font-medium text-label-title">
                 <svg viewBox="0 0 24 24" class="size-3" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 Video
+                <!-- External-link glyph signals the card opens YouTube, not a meshy.ai detail page. -->
+                <svg viewBox="0 0 24 24" class="ml-0.5 size-3 text-label-soft" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5h5v5M19 5l-9 9M5 5h4v2H7v10h10v-2h2v4H5z"/></svg>
               </div>
             </div>
             <div class="flex flex-col gap-1.5">
@@ -326,7 +328,7 @@
         } else {
           t.textContent = activeType === "all" ? "All tutorials" : activeType === "guide" ? "Guides" : "Video walkthroughs";
           s.textContent = activeType === "all"
-            ? "Guides and video walkthroughs, mixed. Filter by type or pick a topic from the left."
+            ? "Guides and video walkthroughs, mixed. Guides open the article; videos open on YouTube."
             : `${list.length} ${list.length === 1 ? "item" : "items"}`;
         }
       }
