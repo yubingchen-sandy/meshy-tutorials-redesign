@@ -8,8 +8,9 @@
 
 1. **取消 `/tutorials` 下的 Blog Guides 入口**。Blog 内容回归 `/blog/<category>`，必要时 301 旧 URL。
 2. **`/tutorials` 改成左侧边栏知识库**，导航以"用户做什么"为分类，而不是 YouTube playlist。
-3. **详情页骨架以图文 step-by-step 为主**，视频是可选嵌入。Schema 按内容主体选择：HowTo / VideoObject / Article 三选一，避免硬塞 VideoObject。
-4. **每个 YouTube 视频派生一个配套图文页**：视频转写 → LLM 整理步骤 → 人工配图校对。视频党留在 YouTube，搜索流量走图文。
+3. **URL 一律扁平：`/tutorials/<slug>`**。分类信号通过 breadcrumb + category 标签 + JSON-LD `BreadcrumbList` 表达，不在 URL 里嵌套。30+ 篇之后再评估是否升级嵌套。
+4. **详情页骨架以图文 step-by-step 为主**，视频是可选嵌入。Schema 按内容主体选择：HowTo / VideoObject / Article 三选一，避免硬塞 VideoObject。
+5. **每个 YouTube 视频派生一个配套图文页**：视频转写 → LLM 整理步骤 → 人工配图校对。视频党留在 YouTube，搜索流量走图文。
 
 ---
 
@@ -35,28 +36,25 @@
 
 ## 3. URL 架构
 
-### Tutorials（新）
+### Tutorials（新 — 扁平 URL）
+
+**决案**：所有教程详情页统一走 `/tutorials/<slug>`，**不嵌套**。分类通过 breadcrumb、category 标签、`BreadcrumbList` schema、以及列表页的 `?category=` 过滤来表达。
 
 ```
-/tutorials                                  ← 知识库首页（主题入口 + 热门 + 最新）
-/tutorials/quickstart                       ← 快速上手
-/tutorials/image-to-3d                      ← 主题页
-/tutorials/image-to-3d/<slug>               ← 具体教程
-/tutorials/text-to-3d
-/tutorials/text-to-3d/<slug>
-/tutorials/texturing
-/tutorials/rigging
-/tutorials/animation
-/tutorials/workflows/blender
-/tutorials/workflows/blender/<slug>
-/tutorials/workflows/unity
-/tutorials/workflows/unreal
-/tutorials/workflows/3d-printing
-/tutorials/api                              ← API 教程
-/tutorials/api/<slug>
+/tutorials                                  ← 知识库首页 / 列表（左侧栏 + 主区）
+/tutorials?category=image-to-3d             ← 列表过滤视图（不是独立页面）
+/tutorials?category=rigging
+/tutorials?category=workflows-blender
+/tutorials?category=api
+/tutorials/<slug>                           ← 所有详情页都是这个形态
 /tutorials/videos                           ← 全部视频（保留逛逛体验，但不再是首页）
-/tutorials/videos/playlist/<playlist-id>    ← 单个 playlist
 ```
+
+**为什么扁平**：
+- 8 篇起步，没到需要 URL 层级才能管的体量。
+- slug 直接用现成的（如 `character-auto-rigging-workflow`），零迁移负担。
+- URL 永远稳定。即便将来增类目，新增的也是 `?category=` 值或 breadcrumb 文案，不动 URL。
+- 嵌套 URL 在 50+ 篇时再考虑；届时已有 GSC 数据知道用户实际路径，迁移有依据，可一次性 301。
 
 ### Blog（建议）
 
@@ -72,30 +70,28 @@
 
 ## 4. 左侧边栏分类（Tutorials Sidebar）
 
-按"用户要做什么"组织，而不是按 YouTube playlist：
+按"用户要做什么"组织，而不是按 YouTube playlist。**每一项指向同一个 `/tutorials` 列表页**，差别只在 `?category=` 过滤值：
 
 ```
-🚀 Quickstart                /tutorials/quickstart
-
 Core features
-  Image to 3D                 /tutorials/image-to-3d
-  Text to 3D                  /tutorials/text-to-3d
-  Texturing (PBR / Remesh)    /tutorials/texturing
-  Rigging                     /tutorials/rigging
-  Animation                   /tutorials/animation
-  Multi-view                  /tutorials/multi-view
+  Image to 3D                 /tutorials?category=image-to-3d
+  Text to 3D                  /tutorials?category=text-to-3d
+  Texturing (PBR / Remesh)    /tutorials?category=texturing
+  Rigging                     /tutorials?category=rigging
+  Animation                   /tutorials?category=animation
+  Multi-view                  /tutorials?category=multi-view
 
 Workflows
-  Meshy + Blender             /tutorials/workflows/blender
-  Meshy + Unity               /tutorials/workflows/unity
-  Meshy + Unreal              /tutorials/workflows/unreal
-  Meshy + 3D Printing         /tutorials/workflows/3d-printing
-  Meshy + ZBrush              /tutorials/workflows/zbrush
+  Meshy + Blender             /tutorials?category=workflows-blender
+  Meshy + Unity               /tutorials?category=workflows-unity
+  Meshy + Unreal              /tutorials?category=workflows-unreal
+  Meshy + 3D Printing         /tutorials?category=workflows-3d-printing
+  Meshy + ZBrush              /tutorials?category=workflows-zbrush
 
 Developers
-  API quickstart              /tutorials/api
-  Webhooks                    /tutorials/api/webhooks
-  Common recipes              /tutorials/api/recipes
+  API quickstart              /tutorials?category=api
+  Webhooks                    /tutorials?category=webhooks
+  Common recipes              /tutorials?category=recipes
 
 ────────────────────────────
 All video walkthroughs →      /tutorials/videos
@@ -103,7 +99,8 @@ All video walkthroughs →      /tutorials/videos
 
 **约束**：
 - 左侧栏二级条目维持在 **15–20 条以内**，超出就抽象成子分类。
-- 当前 URL（如 `/tutorials/3d-printing-academy`）映射到新分类下，旧 URL 301。
+- 没有内容的分类不展示（计数为 0 隐藏）。
+- 当前 URL（如 `/tutorials/3d-printing-academy`）保留不动；不强行迁到 `?category=`。
 
 ---
 
@@ -205,9 +202,10 @@ LLM 整理 → step 结构 + 提取关键截图时间点
 人工校对 → 配图 / 改写 / 加 prerequisites + FAQ
   │
   ▼
-发布到 /tutorials/<category>/<slug>
+发布到 /tutorials/<slug>          ← 扁平 URL；category 仅作元数据
   │
   ├─ HowTo schema
+  ├─ BreadcrumbList schema（中段 "Rigging" → /tutorials?category=rigging）
   ├─ 视频作为 "Optional: watch the video" 区块嵌入
   └─ 视频卡反向链回该图文页
 ```
@@ -219,29 +217,31 @@ LLM 整理 → step 结构 + 提取关键截图时间点
 
 ---
 
-## 8. 迁移与 301 表
+## 8. 8 个新 slug 的落地（无需 301）
 
-| 现有 URL | 新 URL | 处理 |
+URL 扁平意味着这 8 篇直接落到 `/tutorials/<slug>`，**slug 沿用你已经定的、不改名**，因此**没有 301 工作量**。category 只是元数据 + breadcrumb 文案：
+
+| Slug（最终 URL） | category（元数据 / breadcrumb 中段） | 主 schema |
 |---|---|---|
-| `/tutorials` | `/tutorials`（重做） | 重写内容 |
-| `/tutorials/3d-printing-academy` | `/tutorials/workflows/3d-printing` | 301 |
-| `/tutorials/3d-printing-academy/<slug>` | `/tutorials/workflows/3d-printing/<slug>` | 301 |
-| 现有 8 个 blog 候选 slug：<br>`image-to-3d-model-complete-guide`<br>`text-to-3d-model-tutorial`<br>`photo-to-3d-printable-model`<br>`3d-model-for-unity-workflow`<br>`character-auto-rigging-workflow`<br>`pbr-texturing-with-meshy`<br>`api-quickstart-image-to-3d`<br>`export-to-blender-workflow` | 逐条判定：<br>• 可执行步骤型 → `/tutorials/<topic>/<slug>`<br>• 科普综述型 → `/blog/<slug>` | 见下方分类 |
+| `/tutorials/image-to-3d-model-complete-guide` | Image to 3D | HowTo |
+| `/tutorials/text-to-3d-model-tutorial` | Text to 3D | HowTo |
+| `/tutorials/photo-to-3d-printable-model` | 3D Printing | HowTo |
+| `/tutorials/3d-model-for-unity-workflow` | Workflows · Unity | HowTo |
+| `/tutorials/character-auto-rigging-workflow` | Rigging | HowTo |
+| `/tutorials/pbr-texturing-with-meshy` | Texturing | HowTo |
+| `/tutorials/api-quickstart-image-to-3d` | Developers · API | HowTo + 代码块 |
+| `/tutorials/export-to-blender-workflow` | Workflows · Blender | HowTo |
 
-**8 个 slug 的归属建议**（按标题语义，可能需要看实际内容调整）：
+每个详情页 breadcrumb 形如：`Home > Tutorials > <category> > <article>`，其中 `<category>` 链接到 `/tutorials?category=...`，叶子 URL 是上表那个扁平形态。
 
-| Slug | 建议归属 | 主 schema |
-|---|---|---|
-| `image-to-3d-model-complete-guide` | `/tutorials/image-to-3d`（主题页） | CollectionPage（如果是入口）/ HowTo（如果是单一长教程） |
-| `text-to-3d-model-tutorial` | `/tutorials/text-to-3d/<slug>` | HowTo |
-| `photo-to-3d-printable-model` | `/tutorials/workflows/3d-printing/photo-to-printable` | HowTo |
-| `3d-model-for-unity-workflow` | `/tutorials/workflows/unity/<slug>` | HowTo |
-| `character-auto-rigging-workflow` | `/tutorials/rigging/auto-rigging` | HowTo |
-| `pbr-texturing-with-meshy` | `/tutorials/texturing/pbr` | HowTo |
-| `api-quickstart-image-to-3d` | `/tutorials/api/image-to-3d-quickstart` | HowTo + 代码块 |
-| `export-to-blender-workflow` | `/tutorials/workflows/blender/export` | HowTo |
+**现有 URL 的处理**：
 
-→ 这 8 个都是可执行教程，**全部进 `/tutorials`**，没有去 blog 的。Blog Guides 这个标签可以彻底废弃。
+| URL | 处理 |
+|---|---|
+| `/tutorials` | 重做内容（左侧栏 + 列表） |
+| `/tutorials/3d-printing-academy` | 保留不动，主题独立 |
+
+→ 这 8 个都是可执行教程，**全部进 `/tutorials/<slug>`**，没有去 blog 的。Blog Guides 这个标签可以彻底废弃。
 
 ---
 
@@ -252,9 +252,9 @@ LLM 整理 → step 结构 + 提取关键截图时间点
 - 起 10–15 篇优先 tutorial 的 slug 清单。
 
 **Phase 1：知识库骨架（2–3 周）**
-- 重做 `/tutorials` 首页 + 左侧边栏 + 主题页 layout。
-- 详情页模板（HowTo + breadcrumb + FAQ + 视频可选区）。
-- 旧 URL 301 配置。
+- 重做 `/tutorials` 列表：左侧栏 + `?category=` 过滤 + 卡片网格。
+- 详情页模板：扁平 URL `/tutorials/<slug>` + breadcrumb + HowTo + FAQ + 视频可选区。
+- 8 篇新 slug 上线（沿用现有 slug，无 301）。
 
 **Phase 2：内容回填（持续）**
 - 每周 2–3 篇配套图文，优先级按 GSC keyword opportunity 排。
