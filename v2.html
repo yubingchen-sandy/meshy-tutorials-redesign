@@ -151,11 +151,6 @@
           <div id="emptyState" class="hidden rounded-xl border border-dashed border-bg-translucent p-12 text-center text-sm text-label-soft">No tutorials in this category yet.</div>
         </section>
 
-        <!-- FAQ -->
-        <section class="flex flex-col gap-4">
-          <h2 class="text-xl font-bold text-label-title">FAQ</h2>
-          <div id="faqList" class="flex flex-col divide-y divide-bg-translucent rounded-xl border border-bg-translucent bg-bg-base"></div>
-        </section>
       </main>
       </div>
     </div>
@@ -244,13 +239,6 @@
         { id: "XetIh0YyS30", title: "Multi-View Generator is HERE - Turn Images Into 3D Models Faster & Better!", date: "2025-06-24", duration: "0:58", views: 2709, category: "multi-view" },
         { id: "Zsaoo4e3fDg", title: "Struggling With AI Prompts? Let Meshy Generate Better Prompts for You!", date: "2025-06-21", duration: "1:01", views: 855, category: "text-to-3d" },
         { id: "kUa6N-2X4Zo", title: "Create Stylized 3D Game Assets with AI | Meshy Full Workflow for Game Devs", date: "2025-06-06", duration: "3:15", views: 319662, category: "text-to-3d" },
-      ];
-
-      const FAQS = [
-        { q: "Do I need to install anything to follow these tutorials?", a: "No. All tutorials run in the Meshy web app. Workflows that mention Blender, Unity, etc. require the corresponding tool installed locally." },
-        { q: "Are these tutorials free?", a: "Yes. Reading and following the steps is free. Generations themselves use credits in your Meshy account; the Free plan includes a daily allowance." },
-        { q: "Where can I find the source files?", a: "Each tutorial provides downloadable starter assets where relevant. Look for the \"Download starter\" button below the intro." },
-        { q: "Can I use the output commercially?", a: "Yes, on paid plans. See Pricing for the per-plan commercial-use terms." },
       ];
 
       const gradients = ["from-[#c5f955] to-[#1f6f3f]", "from-[#6ee7ff] to-[#1e3a8a]", "from-[#fca5f1] to-[#7c2d6b]", "from-[#fdba74] to-[#7c2d12]", "from-[#a5b4fc] to-[#312e81]", "from-[#fde047] to-[#713f12]", "from-[#5eead4] to-[#134e4a]", "from-[#f9a8d4] to-[#831843]"];
@@ -395,16 +383,6 @@
           render();
         });
       });
-
-      // ---- FAQ ----
-      document.getElementById("faqList").innerHTML = FAQS.map((f, i) => `
-        <details class="group p-5" ${i === 0 ? "open" : ""}>
-          <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-label-title">
-            <span>${f.q}</span>
-            <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-label-soft transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <p class="mt-3 text-sm text-label-base">${f.a}</p>
-        </details>`).join("");
 
       // ---- Init ----
       syncSidebar();
