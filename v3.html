@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorials · Meshy (v3 — simplified)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "bg-base": "#181818",
+              "bg-base-hover": "#262626",
+              "bg-modal-overlay": "#00000099",
+              "bg-translucent": "#ffffff0d",
+              "bg-translucent-strong": "#ffffff1a",
+              "label-title": "#ffffff",
+              "label-base": "#dedede",
+              "label-soft": "#9b9b9b",
+              "accent-base": "#c5f955",
+              "accent-base-hover": "#a8e328",
+            },
+            maxWidth: { "8xl": "88rem" },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { background-color: #0f0f0f; color: #dedede; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+      .card-img { transition: transform 0.3s ease-out; }
+      .group:hover .card-img { transform: scale(1.02); }
+      ::-webkit-scrollbar { height: 6px; width: 6px; }
+      ::-webkit-scrollbar-thumb { background: #2e2e2e; border-radius: 9999px; }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Global meshy.ai header -->
+    <header class="sticky inset-x-0 top-0 z-50 flex h-[72px] w-full items-center bg-[#0f0f0f]/80 backdrop-blur-md">
+      <div class="mx-auto flex w-full max-w-8xl items-center justify-between gap-6 px-4 md:px-6 lg:px-8">
+        <a href="/" aria-label="Meshy" class="flex items-center">
+          <svg viewBox="0 0 32 32" class="size-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 3 4 10v12l12 7 12-7V10L16 3Z" fill="#C5F955"/>
+            <path d="M16 8.5 9 12.5v7l7 4 7-4v-7l-7-4Z" fill="#FF3E8F"/>
+          </svg>
+          <span class="ml-2 text-base font-bold text-label-title">Meshy</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm font-medium text-label-base md:flex">
+          <a href="#" class="hover:text-label-title">Resources</a>
+          <a href="#" class="hover:text-label-title">Pricing</a>
+          <a href="#" class="hover:text-label-title">API</a>
+          <a href="#" class="hover:text-label-title">Contact Sales</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="#" class="text-sm font-medium text-label-base hover:text-label-title">Log in</a>
+          <button class="rounded-full bg-accent-base px-4 py-1.5 text-sm font-bold text-black hover:bg-accent-base-hover">Sign Up Free</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto w-full max-w-8xl px-4 md:px-6 lg:px-8 pb-24">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-1.5 py-6 text-sm text-label-soft" aria-label="Breadcrumb">
+        <a href="#" class="hover:text-label-base">Home</a>
+        <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></svg>
+        <span class="text-label-base">Tutorials</span>
+      </nav>
+
+      <!-- Hero -->
+      <header class="flex flex-col gap-3 pt-2 pb-6">
+        <h1 class="text-[40px] font-bold leading-tight text-label-title">Meshy Tutorials</h1>
+        <p class="max-w-3xl text-base text-label-base">Two flavors, one place. <strong class="text-label-title">Guides</strong> are step-by-step articles maintained by our team. <strong class="text-label-title">Videos</strong> are auto-pulled from our YouTube channel daily and open on YouTube.</p>
+      </header>
+
+      <!-- Type filter -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-bg-translucent py-4">
+        <div id="typeFilter" class="flex gap-1 rounded-lg border border-bg-translucent bg-bg-base p-1 text-sm">
+          <button data-type="all" class="type-pill flex items-center gap-1.5 rounded-md bg-bg-base-hover px-3 py-1.5 font-medium text-label-title">
+            <span>All</span>
+            <span class="text-label-soft text-xs" data-count="all"></span>
+          </button>
+          <button data-type="guide" class="type-pill flex items-center gap-1.5 rounded-md px-3 py-1.5 font-medium text-label-soft hover:text-label-base">
+            <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6M8 13h8M8 16h5"/></svg>
+            <span>Guides</span>
+            <span class="text-label-soft text-xs" data-count="guide"></span>
+          </button>
+          <button data-type="video" class="type-pill flex items-center gap-1.5 rounded-md px-3 py-1.5 font-medium text-label-soft hover:text-label-base">
+            <svg viewBox="0 0 24 24" class="size-4" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <span>Videos</span>
+            <span class="text-label-soft text-xs" data-count="video"></span>
+          </button>
+        </div>
+        <p class="text-xs text-label-soft">Sorted by most recent.</p>
+      </div>
+
+      <!-- Grid -->
+      <div id="tutGrid" class="grid grid-cols-1 gap-x-6 gap-y-12 pt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      <div id="emptyState" class="hidden rounded-xl border border-dashed border-bg-translucent p-12 text-center text-sm text-label-soft">No tutorials in this view yet.</div>
+    </div>
+
+    <script>
+      // ---- Guides (manually-authored articles; image + text + optional embedded video) ----
+      const GUIDES = [
+        { slug: "image-to-3d-model-complete-guide", topic: "Image to 3D",        level: "Beginner",     min: 6,  date: "2025-04-18" },
+        { slug: "text-to-3d-model-tutorial",        topic: "Text to 3D",         level: "Beginner",     min: 5,  date: "2025-04-10" },
+        { slug: "photo-to-3d-printable-model",      topic: "3D Printing",        level: "Intermediate", min: 12, date: "2025-03-28" },
+        { slug: "3d-model-for-unity-workflow",      topic: "Workflows · Unity",  level: "Intermediate", min: 9,  date: "2025-03-15" },
+        { slug: "character-auto-rigging-workflow",  topic: "Rigging",            level: "Beginner",     min: 10, date: "2025-03-02" },
+        { slug: "pbr-texturing-with-meshy",         topic: "Texturing",          level: "Intermediate", min: 8,  date: "2025-02-20" },
+        { slug: "api-quickstart-image-to-3d",       topic: "Developers · API",   level: "Developer",    min: 7,  date: "2025-02-08" },
+        { slug: "export-to-blender-workflow",       topic: "Workflows · Blender",level: "Beginner",     min: 4,  date: "2025-01-25" },
+      ];
+
+      // ---- Videos (auto-crawled daily from MeshyAI YouTube channel) ----
+      const VIDEOS = [
+        { id: "6HUXEVqEthM", title: "Meshy + Unity: 3-Step Workflow to Speed Up Game Prototyping", date: "2026-05-26", duration: "1:28", views: 481 },
+        { id: "y_wZVIUkiGI", title: "AI Auto-Repair: Generate Print-Ready Models in One Click", date: "2026-05-25", duration: "0:36", views: 136 },
+        { id: "OGgz90Vzg2I", title: "Meshy + Blender: From Concept Art to a 3D Scene in Hours", date: "2026-05-18", duration: "1:40", views: 26271 },
+        { id: "WwkuP8_S-WI", title: "Meshy + Blender + Seedance 2.0: Build a Fighting Game Scene from Concept", date: "2026-05-13", duration: "1:22", views: 2117 },
+        { id: "VC9VvhQgI7U", title: "How to Create 3D Models with Meshy in 2026 (New Workspace Walkthrough)", date: "2026-05-11", duration: "2:03", views: 28331 },
+        { id: "o4dNcBL-WQ4", title: "How to Make Glowing Sci-Fi Game Assets in Minutes with Meshy", date: "2026-05-04", duration: "0:47", views: 101349 },
+        { id: "QnK5vtng4EM", title: "AI in Games: From Faster Production to AI-Generated Gameplay | Meshy Talk", date: "2026-05-02", duration: "54:37", views: 16931 },
+        { id: "MUJp6wOqu6M", title: "Meshy + Blender: How to Create 3D Characters in Dramatic Poses in MINUTES!", date: "2026-04-23", duration: "1:00", views: 704199 },
+        { id: "AlJj-0Q3BO8", title: "Meshy + Blender: We Built a Hollow Knight-Inspired World in 3D", date: "2026-04-15", duration: "1:11", views: 2066 },
+        { id: "uoMIrL40pqQ", title: "New Custom Pose: Generate 3D Characters in Any Pose You Want", date: "2026-04-10", duration: "0:50", views: 26741 },
+        { id: "LqqRW6HdN_c", title: "Generate, Print, Deliver: Industrial-Grade 3D Printing Made Simple with Meshy x Formlabs!", date: "2026-04-08", duration: "1:20", views: 230800 },
+        { id: "CRXjgZpLFAk", title: "Meshy MCP is Here: Your AI Agent Can Now Create 3D Models", date: "2026-04-03", duration: "0:52", views: 37761 },
+        { id: "e0pEu26pi4g", title: "Meshy + Unity: We Built an FPS in Days Using Only AI-Generated 3D Assets", date: "2026-03-31", duration: "1:08", views: 2262 },
+        { id: "3zNJogxibL0", title: "Meshy + Blender: Build a 3D Kitchen Simulator FAST with AI", date: "2026-03-16", duration: "1:00", views: 2210 },
+        { id: "nnwEc0JwNFE", title: "How to Generate Seamless PBR Textures with AI in Seconds | Meshy tutorial", date: "2026-03-06", duration: "0:51", views: 1140 },
+        { id: "EZN8xb1xHzU", title: "How to 3D Print Multi-Color Models with Meshy: Image ➡️ 3D ➡️ Multi-Color Prints", date: "2026-03-02", duration: "1:25", views: 166164 },
+        { id: "5poNShNJpI4", title: "Introducing Custom Style: Create Stylized 3D Assets in MINUTES!", date: "2026-02-26", duration: "1:00", views: 2739 },
+        { id: "WJ5vFJqSPDU", title: "Meshy + Unity: Recreate 3D Tank Battle Game with AI", date: "2026-02-19", duration: "1:23", views: 2095 },
+        { id: "KgYSf59Gpsc", title: "Meshy + Blender: Create a Stylized MOBA Game Environment", date: "2026-02-05", duration: "0:54", views: 37517 },
+        { id: "rI2wbucYX50", title: "Introducing The Mesh Up Podcast!", date: "2026-01-30", duration: "0:35", views: 302 },
+        { id: "UAZW9zXLvfc", title: "Multi Image to 3D is Now Enhanced: Transform Your Multi-View Design into a 3D Model!", date: "2026-01-23", duration: "0:35", views: 68419 },
+        { id: "r-413N5n0i8", title: "Custom Pose: Generate 3D Characters from Images in ANY Pose!", date: "2026-01-21", duration: "0:46", views: 4333 },
+        { id: "ljv3ABTHsoM", title: "Create Stylized 3D Game Assets with AI: Meshy ➡️ ZBrush ➡️ Substance Painter (Full Workflow)", date: "2026-01-13", duration: "1:54", views: 1257 },
+        { id: "o-H--pe5mM8", title: "The Mesh Up Podcast – Episode 0 | From Creator Hangout to Podcast (AI, Game Dev & Meshy)", date: "2026-01-08", duration: "1:25:02", views: 495 },
+        { id: "58jiynKswHo", title: "Stop Modeling Everything! Build Your Dream Christmas Town with Meshy & Blender", date: "2025-12-19", duration: "0:33", views: 664 },
+        { id: "ZxI337Ma_Ss", title: "Generate A-Pose or T-Pose 3D Character from a Single Image!", date: "2025-12-11", duration: "0:42", views: 1962 },
+        { id: "SZeBC_g_ARg", title: "New Decal Tool is LIVE! | 3D Texture Editing Just Got Smarter", date: "2025-12-03", duration: "0:56", views: 942 },
+        { id: "N0nr31Q63vs", title: "Meshy Tips: How to Create Batch Low-poly 3D Assets from a Single Image?", date: "2025-11-13", duration: "0:45", views: 3691 },
+        { id: "fGK4l66qiAo", title: "Meshy All-in-One AI Workflow: Text ➡️ Image ➡️ 3D ➡️ Animation ➡️ Video", date: "2025-11-11", duration: "3:15", views: 8361 },
+        { id: "I2YzyKLw8Tk", title: "🎃 Meshy #halloween2025 Creative Challenge is Live!", date: "2025-10-21", duration: "0:55", views: 1748 },
+        { id: "pOramZSYoXM", title: "Meshy Tips: AI Image Editing in Chat!  Prompt Helper Gets Smarter 🤯", date: "2025-10-21", duration: "0:38", views: 2042 },
+        { id: "6q2I5rSVPhw", title: "Full Control! Turn Your 3D Models into Cinematic Game Trailers (NEW AI TOOL)", date: "2025-10-05", duration: "1:20", views: 1919 },
+        { id: "nbsajGU33Pg", title: "Create a Stylized 3D Grocery Store with Meshy & Unreal Engine", date: "2025-09-26", duration: "1:32", views: 8667 },
+        { id: "svACN3qAmKE", title: "Meshy Tips: Add a Stable Base to Get High-Quality 3D Prints", date: "2025-09-25", duration: "0:28", views: 2385 },
+        { id: "YDS2RkZQoYc", title: "Tired of Slow Texturing? Create PBR Textures with AI (Full Workflow)", date: "2025-09-10", duration: "1:20", views: 218025 },
+        { id: "n4sT-Rb7LjU", title: "3D to Video: A New Way to Create Your Vision in Meshy", date: "2025-09-04", duration: "0:53", views: 74061 },
+        { id: "9QIJoIg-cnA", title: "Meshy to Bambu Studio: Quick Guide to Auto-Import 3D Models", date: "2025-09-02", duration: "1:10", views: 3863 },
+        { id: "LNlhCgUsrpQ", title: "Meshy Tips: Convert Multiple Images to 3D—All at Once!", date: "2025-08-20", duration: "0:23", views: 4073 },
+        { id: "ma7ujP8IOko", title: "Introducing Meshy 5: New PBR Textures, Higher Reliability, and Smarter AI Tools", date: "2025-08-18", duration: "0:43", views: 4771 },
+        { id: "EWcjMC_DG1c", title: "Meshy Tips: Select & Download Multiple 3D Assets", date: "2025-08-07", duration: "0:34", views: 3331 },
+        { id: "H9vSJV51VOk", title: "Generate, Curate, and Share: Build Your 3D Collection on Meshy!", date: "2025-08-01", duration: "0:43", views: 2531 },
+        { id: "G8W33T_FuSw", title: "Turn ANY Image into a 3D A/T Pose Model (Easy AI Trick!)", date: "2025-07-29", duration: "0:36", views: 2852 },
+        { id: "OYDXhuCs-Iw", title: "3D Texture Editing is Now as Easy as Drawing — Try Meshy's New AI Tool!", date: "2025-07-25", duration: "0:52", views: 1806 },
+        { id: "xdUDjdcbE_o", title: "Turn ANY Drawing into 3D Art with Meshy — Just Upload & Generate!", date: "2025-07-15", duration: "0:36", views: 1969 },
+        { id: "XetIh0YyS30", title: "Multi-View Generator is HERE - Turn Images Into 3D Models Faster & Better!", date: "2025-06-24", duration: "0:58", views: 2709 },
+        { id: "Zsaoo4e3fDg", title: "Struggling With AI Prompts? Let Meshy Generate Better Prompts for You!", date: "2025-06-21", duration: "1:01", views: 855 },
+        { id: "kUa6N-2X4Zo", title: "Create Stylized 3D Game Assets with AI | Meshy Full Workflow for Game Devs", date: "2025-06-06", duration: "3:15", views: 319662 },
+      ];
+
+      const gradients = ["from-[#c5f955] to-[#1f6f3f]", "from-[#6ee7ff] to-[#1e3a8a]", "from-[#fca5f1] to-[#7c2d6b]", "from-[#fdba74] to-[#7c2d12]", "from-[#a5b4fc] to-[#312e81]", "from-[#fde047] to-[#713f12]", "from-[#5eead4] to-[#134e4a]", "from-[#f9a8d4] to-[#831843]"];
+      const slugToTitle = (s) => s.split("-").map((w) => { if (w === "3d") return "3D"; if (w === "pbr") return "PBR"; if (w === "api") return "API"; return w[0].toUpperCase() + w.slice(1); }).join(" ");
+      const relTime = (d) => { const days = Math.floor((Date.now() - new Date(d)) / 86400000); if (days < 30) return days + "d ago"; if (days < 365) return Math.floor(days / 30) + "mo ago"; return Math.floor(days / 365) + "y ago"; };
+      const fmt = (n) => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "K" : String(n);
+
+      // ---- Unified item list (mixed, newest-first) ----
+      const ITEMS = [
+        ...GUIDES.map((g, i) => ({ ...g, type: "guide", _grad: gradients[i % gradients.length] })),
+        ...VIDEOS.map((v) => ({ ...v, type: "video" })),
+      ];
+
+      // ---- State ----
+      let activeType = "all";
+
+      // ---- Reusable badge HTMLs (the key visual distinction) ----
+      // Guides use a green Article badge (in-page article).
+      // Videos use a darker badge with a play icon and an explicit external-link glyph.
+      const GUIDE_BADGE = `
+        <div class="absolute top-2 left-2 flex items-center gap-1.5 rounded-md bg-accent-base px-2 py-1 text-[11px] font-bold text-black shadow-sm">
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h9l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6M8 13h8M8 16h5"/></svg>
+          <span>Guide</span>
+        </div>`;
+      const VIDEO_BADGE = `
+        <div class="absolute top-2 left-2 flex items-center gap-1.5 rounded-md bg-bg-modal-overlay px-2 py-1 text-[11px] font-bold text-label-title backdrop-blur-sm">
+          <svg viewBox="0 0 24 24" class="size-3.5" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <span>Video</span>
+          <svg viewBox="0 0 24 24" class="ml-0.5 size-3 text-label-soft" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5h5v5M19 5l-9 9M5 5h4v2H7v10h10v-2h2v4H5z"/></svg>
+        </div>`;
+
+      // ---- Card renderers ----
+      function videoCard(v) {
+        return `
+          <a href="https://youtu.be/${v.id}" target="_blank" rel="noopener" class="group flex flex-col gap-3">
+            <div class="relative">
+              <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.title.replace(/"/g, "&quot;")}" class="card-img block aspect-video w-full rounded-xl border border-bg-translucent object-cover" />
+              ${VIDEO_BADGE}
+              <div class="absolute bottom-2 right-2 rounded-md bg-bg-modal-overlay px-2 py-1 text-xs font-bold text-label-title">${v.duration}</div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <h4 class="line-clamp-2 text-sm font-bold leading-snug text-label-title">${v.title}</h4>
+              <div class="flex items-center gap-1.5 text-xs text-label-soft">
+                <span>${relTime(v.date)}</span><span>·</span><span>${fmt(v.views)} views</span>
+              </div>
+            </div>
+          </a>`;
+      }
+
+      function guideCard(g) {
+        return `
+          <a href="v2-detail.html" class="group flex flex-col gap-3">
+            <div class="relative">
+              <div class="card-img relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-bg-translucent bg-gradient-to-br ${g._grad} select-none">
+                <!-- Big watermark-style document icon centered, so guides "look like docs" at a glance -->
+                <svg viewBox="0 0 24 24" class="size-16 text-black/30" fill="none" stroke="currentColor" stroke-width="1.25">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h9l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 3v6h6M8 13h8M8 16h8M8 19h5"/>
+                </svg>
+              </div>
+              ${GUIDE_BADGE}
+              <div class="absolute bottom-2 right-2 rounded-md bg-bg-modal-overlay px-2 py-1 text-xs font-bold text-label-title">${g.min} min read</div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <h4 class="line-clamp-2 text-sm font-bold leading-snug text-label-title">${slugToTitle(g.slug)}</h4>
+              <div class="flex items-center gap-1.5 text-xs text-label-soft">
+                <span>${g.topic}</span><span>·</span><span>${g.level}</span>
+              </div>
+            </div>
+          </a>`;
+      }
+
+      // ---- Render ----
+      function render() {
+        const list = ITEMS
+          .filter((i) => activeType === "all" || i.type === activeType)
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+        const grid = document.getElementById("tutGrid");
+        const empty = document.getElementById("emptyState");
+        if (list.length === 0) {
+          grid.innerHTML = "";
+          empty.classList.remove("hidden");
+        } else {
+          empty.classList.add("hidden");
+          grid.innerHTML = list.map((i) => (i.type === "guide" ? guideCard(i) : videoCard(i))).join("");
+        }
+      }
+
+      // ---- Counts on the pills ----
+      function setCounts() {
+        const total = ITEMS.length;
+        const guides = ITEMS.filter((i) => i.type === "guide").length;
+        const videos = ITEMS.filter((i) => i.type === "video").length;
+        document.querySelector('[data-count="all"]').textContent = total;
+        document.querySelector('[data-count="guide"]').textContent = guides;
+        document.querySelector('[data-count="video"]').textContent = videos;
+      }
+
+      // ---- Wiring ----
+      document.querySelectorAll("#typeFilter .type-pill").forEach((el) => {
+        el.addEventListener("click", () => {
+          activeType = el.dataset.type;
+          document.querySelectorAll("#typeFilter .type-pill").forEach((b) => {
+            const on = b.dataset.type === activeType;
+            b.classList.toggle("bg-bg-base-hover", on);
+            b.classList.toggle("text-label-title", on);
+            b.classList.toggle("text-label-soft", !on);
+          });
+          render();
+        });
+      });
+
+      setCounts();
+      render();
+    </script>
+  </body>
+</html>
